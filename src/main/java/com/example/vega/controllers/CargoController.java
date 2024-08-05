@@ -1,27 +1,26 @@
 package com.example.vega.controllers;
 
+import com.example.vega.models.Cargo;
+import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.vega.services.CargoService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cargo")
 @CrossOrigin(origins = "http://localhost:5173")
 public class CargoController {
     @Autowired
-    private CargoService cargoService;
+    private CargoService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CargoDto> obtenerPorId(@PathVariable id) {
-        Optional<CargoDto> cargoOpt = service.findById(id);
+    @GetMapping("/todos")
+    public ResponseEntity<List<Cargo>> obtenerTodos() {
+        List<Cargo> cargos = service.findAll();
 
-        if (cargoOpt.isPresent()) {
-            return ResponseEntity.ok(cargoOpt.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(cargos);
     }
 }
 
